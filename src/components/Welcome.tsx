@@ -1,5 +1,3 @@
-"use client";
-
 import { useRef, useEffect } from "react";
 import { Button } from "./ui/button";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
@@ -8,7 +6,6 @@ import { Link } from "@tanstack/react-router";
 export default function WelcomePage() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // 1. Properly typed Motion Values
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -16,7 +13,6 @@ export default function WelcomePage() {
   const lightX = useSpring(mouseX, springConfig);
   const lightY = useSpring(mouseY, springConfig);
 
-  // 2. Create the radial gradient string dynamically
   const background = useTransform(
     [lightX, lightY],
     ([x, y]: number[]) => `radial-gradient(600px circle at ${x}px ${y}px, rgba(255,255,255,0.06), transparent 80%)`
@@ -40,7 +36,6 @@ export default function WelcomePage() {
       ref={containerRef}
       className="relative flex flex-col items-center justify-center min-h-screen w-full bg-[#050505] text-zinc-100 overflow-hidden"
     >
-      {/* Dynamic Spotlight */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-0 opacity-60"
         style={{ background }}
@@ -53,21 +48,19 @@ export default function WelcomePage() {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="text-center"
         >
-          {/* Main Title with staggered letter spacing */}
           <h1 className="font-Atomic-Age text-[clamp(4rem,16vw,12rem)] font-bold tracking-[-0.07em] leading-none text-zinc-200">
             KAiROS
           </h1>
 
           <div className="flex items-center justify-center gap-6 mt-4">
-            <div className="h-[1px] w-12 bg-zinc-800" />
+            <div className="h-px w-12 bg-zinc-800" />
             <p className="font-Silkscreen text-[9px] md:text-xs uppercase tracking-[0.5em] text-zinc-500 whitespace-nowrap">
               Every moment carries a mood
             </p>
-            <div className="h-[1px] w-12 bg-zinc-800" />
+            <div className="h-px w-12 bg-zinc-800" />
           </div>
         </motion.div>
 
-        {/* Improved Button UI */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -81,15 +74,13 @@ export default function WelcomePage() {
             <Link to="/begin" className="relative z-10 flex items-center justify-center">
               <span className="relative z-10 tracking-[0.2em] text-sm">BEGIN HERE</span>
 
-              {/* Minimalist "scanning" light effect on hover */}
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-zinc-100/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
+              <div className="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-zinc-100/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
 
             </Link>
           </Button>
         </motion.div>
       </div>
 
-      {/* Decorative corners for a "natural" technical feel */}
       <div className="absolute top-12 left-12 opacity-30">
         <div className="w-4 h-4 border-t border-l border-zinc-500" />
       </div>
