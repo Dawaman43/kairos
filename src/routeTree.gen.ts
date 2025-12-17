@@ -9,9 +9,10 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResultsRouteImport } from './routes/results'
 import { Route as BeginRouteImport } from './routes/begin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ResultsIndexRouteImport } from './routes/results/index'
+import { Route as ResultsIdRouteImport } from './routes/results/$id'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
@@ -22,11 +23,6 @@ import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 
-const ResultsRoute = ResultsRouteImport.update({
-  id: '/results',
-  path: '/results',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BeginRoute = BeginRouteImport.update({
   id: '/begin',
   path: '/begin',
@@ -35,6 +31,16 @@ const BeginRoute = BeginRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsIndexRoute = ResultsIndexRouteImport.update({
+  id: '/results/',
+  path: '/results/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResultsIdRoute = ResultsIdRouteImport.update({
+  id: '/results/$id',
+  path: '/results/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
@@ -86,8 +92,9 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/begin': typeof BeginRoute
-  '/results': typeof ResultsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/results/$id': typeof ResultsIdRoute
+  '/results': typeof ResultsIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -100,8 +107,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/begin': typeof BeginRoute
-  '/results': typeof ResultsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/results/$id': typeof ResultsIdRoute
+  '/results': typeof ResultsIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -115,8 +123,9 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/begin': typeof BeginRoute
-  '/results': typeof ResultsRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/results/$id': typeof ResultsIdRoute
+  '/results/': typeof ResultsIndexRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
@@ -131,8 +140,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/begin'
-    | '/results'
     | '/demo/tanstack-query'
+    | '/results/$id'
+    | '/results'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
@@ -145,8 +155,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/begin'
-    | '/results'
     | '/demo/tanstack-query'
+    | '/results/$id'
+    | '/results'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
@@ -159,8 +170,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/begin'
-    | '/results'
     | '/demo/tanstack-query'
+    | '/results/$id'
+    | '/results/'
     | '/demo/api/names'
     | '/demo/api/tq-todos'
     | '/demo/start/api-request'
@@ -174,8 +186,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BeginRoute: typeof BeginRoute
-  ResultsRoute: typeof ResultsRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  ResultsIdRoute: typeof ResultsIdRoute
+  ResultsIndexRoute: typeof ResultsIndexRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
@@ -188,13 +201,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/results': {
-      id: '/results'
-      path: '/results'
-      fullPath: '/results'
-      preLoaderRoute: typeof ResultsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/begin': {
       id: '/begin'
       path: '/begin'
@@ -207,6 +213,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results/': {
+      id: '/results/'
+      path: '/results'
+      fullPath: '/results'
+      preLoaderRoute: typeof ResultsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/results/$id': {
+      id: '/results/$id'
+      path: '/results/$id'
+      fullPath: '/results/$id'
+      preLoaderRoute: typeof ResultsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/tanstack-query': {
@@ -278,8 +298,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BeginRoute: BeginRoute,
-  ResultsRoute: ResultsRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  ResultsIdRoute: ResultsIdRoute,
+  ResultsIndexRoute: ResultsIndexRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoApiTqTodosRoute: DemoApiTqTodosRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,

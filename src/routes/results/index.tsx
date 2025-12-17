@@ -1,7 +1,7 @@
 import ResultsPage from '@/components/Results'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/results')({
+export const Route = createFileRoute('/results/')({
   component: ResultsPage,
 })
 
