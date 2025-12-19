@@ -8,5 +8,7 @@ export const Route = createFileRoute('/results/$id')({
 function RouteComponent() {
   const { id } = Route.useParams();
 
-  return <ResultsDetail id={id} />;
+  if (!id) return <div className="flex items-center justify-center h-svh bg-[#010101] text-zinc-100">Invalid ID</div>;
+
+  return <ResultsDetail movieId={id} />;
 }
